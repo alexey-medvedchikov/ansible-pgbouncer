@@ -6,7 +6,7 @@ This role configures PgBouncer PostgreSQL connection mux utility.
 Postgres server performance degrades when handling a high number of connection due to a 1:1 mapping of connection to Postgres backend processes. PgBouncer is a threaded pooler which can reduce the number of backend processes and the handshaking involved in setting up a new connection.
 
 Example group vars
----------------------------------
+------------------
 
 Ansible handles the templating of userlist.txt, including the md5 hashing.
 
@@ -38,39 +38,38 @@ However we don't setup the repo here.
 Example playbook
 ----------------
 
----
-- hosts:  "{{ group }}"
-  serial: "{{ serial }}"
-  become: yes
-  vars:
-    pgbouncer_users:
-      - name: username
-        pass: unencrypted_password
-      - name: postgres
-        host: unencrypted_password
+    - hosts:  "{{ group }}"
+      serial: "{{ serial }}"
+      become: yes
+      vars:
+        pgbouncer_users:
+          - name: username
+            pass: unencrypted_password
+          - name: postgres
+            host: unencrypted_password
 
-    pgbouncer_databases:
-      - name: "wibble"
-        host: wibble.example.com
-        port: 5432
+        pgbouncer_databases:
+          - name: "wibble"
+            host: wibble.example.com
+            port: 5432
 
-    pgbouncer_max_client_conn: 300
-    pgbouncer_max_db_connections: 300
-    pgbouncer_max_user_connections: 300
+        pgbouncer_max_client_conn: 300
+        pgbouncer_max_db_connections: 300
+        pgbouncer_max_user_connections: 300
 
-    # govern how many backend connections
-    pgbouncer_default_pool_size: 80
+        # govern how many backend connections
+        pgbouncer_default_pool_size: 80
 
-  roles:
-    # This deploys psql and sets up the pgdg repo this ensures that a new pgbouncer is installed and psql can be used to administer it
-    - ansible-postgresql-client
-    - ansible-pgbouncer
+      roles:
+        # This deploys psql and sets up the pgdg repo this ensures that a new pgbouncer is installed and psql can be used to administer it
+        - ansible-postgresql-client
+        - ansible-pgbouncer
 
 
 Debugging
 ---------
 
-If pgbouncer fails to start:-
+If pgbouncer fails to start
 
     sudo -u postgres pgbouncer -d /etc/pgbouncer/pgbouncer.ini -vvvv
 
@@ -106,4 +105,3 @@ Author Information
 ------------------
 
 - Alexey Medvedchikov, 2GIS, LLC
-
